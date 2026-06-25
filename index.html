@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Power & Trade | Portal automático</title>
+  <meta name="description" content="Power & Trade: geopolítica, comércio internacional, energia e risco-país com fontes verificáveis." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'%3E%3Crect width='96' height='96' rx='10' fill='%23080808'/%3E%3Cpath d='M16 18h64v8H16zM22 70h52v8H22z' fill='%23b8962e'/%3E%3Ctext x='48' y='58' text-anchor='middle' font-family='Georgia,serif' font-size='34' font-weight='700' fill='%23f4f1e8'%3EP%26T%3C/text%3E%3C/svg%3E" />
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&family=Space+Mono:wght@400;700&display=swap");
+    :root { --bg:#080808; --panel:#111; --line:rgba(255,255,255,.13); --text:#f4f1e8; --muted:#b7b0a2; --gold:#b8962e; --soft:rgba(184,150,46,.14); --max:1220px; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:radial-gradient(circle at 75% -10%, rgba(184,150,46,.12), transparent 34rem), var(--bg); color:var(--text); font-family:Inter, sans-serif; line-height:1.55; }
+    a { color:inherit; text-decoration:none; }
+    .container { width:min(var(--max), calc(100% - 32px)); margin:auto; }
+    .label { font-family:"Space Mono", monospace; color:var(--gold); text-transform:uppercase; font-size:.72rem; letter-spacing:.08em; }
+    .ticker { height:42px; display:flex; border-bottom:1px solid var(--line); overflow:hidden; background:#050505; }
+    .ticker b { display:grid; place-items:center; background:var(--gold); color:#080808; padding:0 1rem; font-family:"Space Mono", monospace; font-size:.75rem; }
+    .ticker-track { display:flex; min-width:max-content; animation:ticker 42s linear infinite; }
+    .ticker-track span { padding:0 1.5rem; display:flex; align-items:center; white-space:nowrap; color:var(--muted); font-family:"Space Mono", monospace; font-size:.75rem; }
+    @keyframes ticker { to { transform:translateX(-50%); } }
+    header { position:sticky; top:0; z-index:10; background:rgba(8,8,8,.88); backdrop-filter:blur(16px); border-bottom:1px solid var(--line); }
+    .head { height:74px; display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+    .logo { font-family:"Playfair Display", serif; font-weight:800; font-size:clamp(1.4rem, 2.5vw, 2rem); letter-spacing:.04em; }
+    .logo span { color:var(--gold); }
+    nav { display:flex; align-items:center; gap:1rem; color:var(--muted); font-weight:700; font-size:.9rem; }
+    nav a:hover { color:var(--text); }
+    .search { border:1px solid var(--line); background:rgba(255,255,255,.04); color:var(--text); min-height:40px; border-radius:4px; padding:.65rem .8rem; outline:none; width:min(260px, 25vw); }
+    .hero { padding:3rem 0; }
+    .hero-grid { display:grid; grid-template-columns:minmax(0,1.5fr) minmax(300px,.7fr); gap:1rem; }
+    .lead { min-height:560px; border:1px solid var(--line); border-radius:8px; overflow:hidden; background:center/cover; display:flex; align-items:end; position:relative; cursor:pointer; }
+    .lead:before { content:""; position:absolute; inset:0; background:linear-gradient(90deg, rgba(8,8,8,.9), rgba(8,8,8,.25)), linear-gradient(180deg, transparent, rgba(8,8,8,.92)); }
+    .lead-content { position:relative; padding:clamp(1.2rem,4vw,2.3rem); max-width:780px; }
+    h1, h2, h3 { font-family:"Playfair Display", serif; }
+    h1 { font-size:clamp(2.6rem,7vw,6rem); line-height:.9; margin:.6rem 0 1rem; }
+    .lead p, .card p, .side p, .deep p { color:var(--muted); }
+    .side { border:1px solid var(--line); border-radius:8px; padding:1rem; background:rgba(255,255,255,.025); }
+    .latest { display:grid; gap:.75rem; margin-top:1rem; }
+    .latest article { border-bottom:1px solid var(--line); padding-bottom:.75rem; cursor:pointer; }
+    .latest article:last-child { border-bottom:0; }
+    .filters { display:flex; flex-wrap:wrap; gap:.55rem; margin:1rem 0 1.25rem; }
+    .filters button { border:1px solid var(--line); background:transparent; color:var(--muted); border-radius:999px; padding:.55rem .9rem; font-family:"Space Mono", monospace; cursor:pointer; }
+    .filters button.active { background:var(--gold); color:#080808; border-color:var(--gold); }
+    .layout { display:grid; grid-template-columns:minmax(0,1fr) 330px; gap:1rem; padding:1rem 0 4rem; }
+    .grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem; }
+    .card, .deep, .risk { border:1px solid var(--line); border-radius:8px; overflow:hidden; background:rgba(255,255,255,.025); cursor:pointer; position:relative; }
+    .card:after, .deep:after { content:""; position:absolute; left:0; right:0; bottom:0; height:2px; background:linear-gradient(90deg, transparent, var(--gold), transparent); transform:translateX(-105%); transition:.3s ease; }
+    .card:hover:after, .deep:hover:after { transform:translateX(105%); }
+    .image { min-height:190px; background:center/cover; border-bottom:1px solid var(--line); }
+    .body { padding:1rem; }
+    .sidebar { display:grid; gap:1rem; align-self:start; position:sticky; top:92px; }
+    .bar { height:8px; border-radius:999px; background:rgba(255,255,255,.1); overflow:hidden; margin:.35rem 0 .75rem; }
+    .bar i { display:block; height:100%; background:linear-gradient(90deg,var(--gold),#dfc56f); width:var(--w); }
+    .deep-section { border-top:1px solid var(--line); padding:3rem 0; }
+    .deep-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1rem; }
+    .deep { padding:1.1rem; min-height:260px; }
+    footer { border-top:1px solid var(--line); padding:2rem 0; color:var(--muted); background:#050505; }
+    .reader { display:none; position:fixed; inset:0; z-index:30; background:rgba(0,0,0,.78); backdrop-filter:blur(16px); overflow:auto; padding:1rem; }
+    .reader.open { display:block; }
+    .reader-panel { width:min(900px,100%); margin:2rem auto; background:#090909; border:1px solid rgba(184,150,46,.4); border-radius:8px; overflow:hidden; }
+    .reader-hero { min-height:300px; background:center/cover; border-bottom:1px solid var(--line); }
+    .reader-body { padding:clamp(1rem,4vw,2.2rem); }
+    .reader-top { display:flex; justify-content:space-between; gap:1rem; align-items:center; }
+    .close { width:42px; height:42px; background:transparent; border:1px solid var(--line); color:var(--text); border-radius:4px; cursor:pointer; font-size:1.4rem; }
+    .angles { display:grid; gap:.65rem; margin:1rem 0; }
+    .angles div { border-left:2px solid var(--gold); padding-left:.8rem; color:var(--muted); }
+    .source-link { display:inline-block; color:var(--gold); border-bottom:1px solid rgba(184,150,46,.55); margin-top:1rem; }
+    .hidden { display:none; }
+    @media (max-width:900px){ .hero-grid,.layout{grid-template-columns:1fr}.sidebar{position:static}.deep-grid{grid-template-columns:1fr}.grid{grid-template-columns:1fr} nav{display:none}.search{width:42vw}.lead{min-height:480px} }
+  </style>
+</head>
+<body>
+  <div class="ticker"><b>AO VIVO</b><div class="ticker-track" id="ticker"></div></div>
+  <header>
+    <div class="container head">
+      <a class="logo" href="#">POWER <span>&amp;</span> TRADE</a>
+      <nav><a href="#analises">Análises</a><a href="#risco">Risco-País</a><a href="#profundas">Relatórios</a><a href="admin.html">Admin</a></nav>
+      <input id="search" class="search" type="search" placeholder="Buscar" />
+    </div>
+  </header>
+  <main>
+    <section class="hero container">
+      <div class="hero-grid">
+        <article class="lead" id="lead"></article>
+        <aside class="side"><span class="label">Últimas publicações</span><div class="latest" id="latest"></div></aside>
+      </div>
+    </section>
+    <section class="container" id="analises">
+      <span class="label">Curadoria com fontes</span>
+      <h2>Geopolítica aplicada a negócios</h2>
+      <div class="filters" id="filters"></div>
+      <div class="layout">
+        <div class="grid" id="cards"></div>
+        <aside class="sidebar">
+          <section class="risk" id="risco"><div class="body"><span class="label">Risco-País</span><h3>Radar Brasil</h3><p>Painel editorial para priorizar leitura de energia, fiscal, câmbio e ambiente regional.</p><p>Brasil 68</p><div class="bar" style="--w:68%"><i></i></div><p>Argentina 72</p><div class="bar" style="--w:72%"><i></i></div><p>China 79</p><div class="bar" style="--w:79%"><i></i></div></div></section>
+          <section class="side"><span class="label">Regra editorial</span><p>Posts automáticos entram como rascunho. Publicação exige fonte, data, contexto, lado favorável, lado crítico e revisão.</p></section>
+        </aside>
+      </div>
+    </section>
+    <section class="deep-section" id="profundas"><div class="container"><span class="label">Análises aprofundadas</span><h2>Relatórios para decisão</h2><div class="deep-grid" id="deep"></div></div></section>
+  </main>
+  <footer><div class="container"><strong>POWER & TRADE</strong><p>Notícias e análises geopolíticas com fontes explícitas, leitura de impacto e revisão editorial.</p></div></footer>
+  <div class="reader" id="reader"><article class="reader-panel"><div class="reader-hero" id="readerHero"></div><div class="reader-body"><div class="reader-top"><span class="label" id="readerMeta"></span><button class="close" id="close">×</button></div><h2 id="readerTitle"></h2><p id="readerSummary"></p><div id="readerBody"></div><div class="angles" id="readerAngles"></div><a class="source-link" id="readerSource" target="_blank" rel="noreferrer">Abrir fonte original</a><p><strong>Power & Trade</strong><br>Análise Power & Trade.</p></div></article></div>
+  <script>
+    const fallbackPosts = [
+      {
+        id: "petrobras-transicao-2026-06-25",
+        status: "published",
+        category: "Energia",
+        topic: "Brasil Global",
+        publishedAt: "2026-06-25T12:00:00-03:00",
+        sourceName: "AP",
+        sourceUrl: "https://apnews.com/article/1f8bf8cd500fbd25c766ed413d4afae4",
+        image: "https://images.unsplash.com/photo-1513828583688-c52646db42da?auto=format&fit=crop&w=1600&q=82",
+        title: "Petrobras coloca o dilema fóssil no centro da estratégia brasileira",
+        summary: "A discussão sobre petróleo, Amazônia e arrecadação ganhou peso estratégico para o Brasil e para empresas expostas a energia, reputação climática e risco regulatório.",
+        body: [
+          "A fala pública da Petrobras recolocou uma pergunta difícil no centro da agenda econômica brasileira: como equilibrar transição energética, arrecadação pública e segurança de oferta em um país ainda dependente do setor de óleo e gás.",
+          "Para empresas, o impacto não é apenas ambiental. A pauta afeta custo de capital, licenciamento, contratos de longo prazo, risco reputacional e capacidade de competir em mercados que cobram rastreabilidade e metas climáticas.",
+          "A decisão estratégica é montar cenários. O Brasil pode tentar preservar receita fóssil enquanto financia uma transição gradual, mas esse caminho exige transparência regulatória e consistência diplomática."
+        ],
+        angles: {
+          pro: "Defensores argumentam que receitas de petróleo financiam investimento público e segurança energética.",
+          critical: "Críticos apontam risco ambiental, reputacional e dificuldade de liderar a agenda climática ampliando exploração fóssil.",
+          watch: "Licenciamento, COP, planos de investimento da Petrobras e reação de investidores internacionais."
+        }
+      },
+      {
+        id: "ormuz-energia-2026-06-25",
+        status: "published",
+        category: "Energia",
+        topic: "Oriente Médio",
+        publishedAt: "2026-06-25T10:30:00-03:00",
+        sourceName: "The Guardian",
+        sourceUrl: "https://www.theguardian.com/business/2026/jun/25/oil-price-falls-pre-iran-war-levels-more-tankers-exit-strait-of-hormuz",
+        image: "https://images.unsplash.com/photo-1605281317010-fe5ffe798166?auto=format&fit=crop&w=1600&q=82",
+        title: "Ormuz mostra como uma rota distante mexe com energia e frete no Brasil",
+        summary: "Mesmo com alívio no petróleo, a rota segue como ponto de risco para seguros, diesel, frete marítimo e planejamento de empresas brasileiras.",
+        body: [
+          "A normalização parcial do tráfego no Estreito de Ormuz reduziu o prêmio imediato no petróleo, mas não eliminou a vulnerabilidade. O mercado continua sensível a qualquer sinal de interrupção.",
+          "No Brasil, o canal de impacto passa por combustíveis, frete, fertilizantes, químicos e expectativas de inflação. A queda de preço pode aliviar no curto prazo, mas o risco operacional segue no orçamento.",
+          "Empresas com cadeia internacional devem revisar hedge, fornecedores, estoque crítico e cláusulas de atraso. Geopolítica aqui vira margem, caixa e capacidade de entrega."
+        ],
+        angles: {
+          pro: "A queda do petróleo dá algum alívio para inflação de custos e transporte.",
+          critical: "O risco de rota permanece e pode voltar a pressionar fretes e seguros rapidamente.",
+          watch: "Fluxo de petroleiros, comunicados do Irã, preço do Brent, diesel e custo de seguro marítimo."
+        }
+      },
+      {
+        id: "america-latina-trumpismo-2026-06-25",
+        status: "published",
+        category: "América Latina",
+        topic: "Diplomacia",
+        publishedAt: "2026-06-25T09:15:00-03:00",
+        sourceName: "Le Monde",
+        sourceUrl: "https://www.lemonde.fr/en/opinion/article/2026/06/25/trumpism-gains-ground-in-latin-america_6754859_23.html",
+        image: "https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&w=1600&q=82",
+        title: "Guinada conservadora regional muda o cálculo diplomático do Brasil",
+        summary: "O avanço de governos e movimentos alinhados a Washington pode reduzir margem para consensos regionais liderados por Brasília.",
+        body: [
+          "A América Latina entra em uma fase de maior disputa política e geopolítica. O avanço de agendas conservadoras próximas ao trumpismo pode alterar o espaço de negociação regional do Brasil.",
+          "Para Brasília, o desafio é preservar relações com Washington, Pequim e vizinhos sem perder capacidade de liderança. Comércio, segurança, migração e infraestrutura entram no mesmo tabuleiro.",
+          "Para empresas brasileiras, integração regional exigirá mais leitura política e menos piloto automático. Eleições, coalizões e mudanças regulatórias passam a pesar na entrada em mercados."
+        ],
+        angles: {
+          pro: "Alinhamento com Washington pode abrir canais de segurança e investimento em alguns países.",
+          critical: "Fragmentação regional dificulta coordenação comercial, infraestrutura e diplomacia brasileira.",
+          watch: "Eleições regionais, políticas sobre China, acordos comerciais e relação bilateral com os EUA."
+        }
+      }
+    ];
+    const state = { posts: [], filter: "Todos", query: "" };
+    const fmt = (date) => new Intl.DateTimeFormat("pt-BR", { dateStyle:"short", timeStyle:"short" }).format(new Date(date));
+    const categories = ["Todos", "Energia", "Comércio", "Risco-País", "América Latina", "Brasil Global"];
+    const el = (tag, cls, html = "") => { const node = document.createElement(tag); if (cls) node.className = cls; node.innerHTML = html; return node; };
+    const matches = (post) => (state.filter === "Todos" || post.category === state.filter) && JSON.stringify(post).toLowerCase().includes(state.query.toLowerCase());
+    async function loadPosts() {
+      try {
+        const response = await fetch("data/posts.json", { cache: "no-store" });
+        if (!response.ok) throw new Error("posts.json indisponível");
+        state.posts = await response.json();
+      } catch {
+        state.posts = fallbackPosts;
+      }
+      state.posts = state.posts.filter((post) => post.status === "published").sort((a,b) => new Date(b.publishedAt) - new Date(a.publishedAt));
+      render();
+    }
+    function render() {
+      const [lead, ...rest] = state.posts;
+      document.getElementById("ticker").innerHTML = [...state.posts, ...state.posts].map((p) => `<span>${p.title}</span>`).join("");
+      document.getElementById("lead").style.backgroundImage = `url("${lead.image}")`;
+      document.getElementById("lead").innerHTML = `<div class="lead-content"><span class="label">${lead.category} | ${lead.sourceName}</span><h1>${lead.title}</h1><p>${lead.summary}</p><span class="label">Ler análise</span></div>`;
+      document.getElementById("lead").onclick = () => openReader(lead);
+      document.getElementById("latest").innerHTML = rest.slice(0,4).map((p) => `<article data-id="${p.id}"><span class="label">${fmt(p.publishedAt)}</span><h3>${p.title}</h3><p>${p.summary}</p></article>`).join("");
+      document.querySelectorAll("[data-id]").forEach((node) => node.onclick = () => openReader(state.posts.find((p) => p.id === node.dataset.id)));
+      document.getElementById("filters").innerHTML = categories.map((c) => `<button class="${c === state.filter ? "active" : ""}" data-filter="${c}">${c}</button>`).join("");
+      document.querySelectorAll("[data-filter]").forEach((btn) => btn.onclick = () => { state.filter = btn.dataset.filter; render(); });
+      const visible = state.posts.filter(matches);
+      document.getElementById("cards").innerHTML = visible.map((p) => `<article class="card" data-card="${p.id}"><div class="image" style="background-image:url('${p.image}')"></div><div class="body"><span class="label">${p.category} | ${p.sourceName}</span><h3>${p.title}</h3><p>${p.summary}</p></div></article>`).join("") || `<div class="side">Nenhum artigo encontrado.</div>`;
+      document.querySelectorAll("[data-card]").forEach((node) => node.onclick = () => openReader(state.posts.find((p) => p.id === node.dataset.card)));
+      document.getElementById("deep").innerHTML = state.posts.slice(0,3).map((p, i) => `<article class="deep" data-deep="${p.id}"><span class="label">0${i+1}</span><h3>${p.title}</h3><p>${p.angles?.watch || p.summary}</p></article>`).join("");
+      document.querySelectorAll("[data-deep]").forEach((node) => node.onclick = () => openReader(state.posts.find((p) => p.id === node.dataset.deep)));
+    }
+    function openReader(post) {
+      document.getElementById("readerHero").style.backgroundImage = `url("${post.image}")`;
+      document.getElementById("readerMeta").textContent = `${post.category} | ${post.sourceName} | ${fmt(post.publishedAt)}`;
+      document.getElementById("readerTitle").textContent = post.title;
+      document.getElementById("readerSummary").textContent = post.summary;
+      document.getElementById("readerBody").innerHTML = post.body.map((p) => `<p>${p}</p>`).join("");
+      document.getElementById("readerAngles").innerHTML = `<div><strong>Visão favorável:</strong> ${post.angles?.pro || ""}</div><div><strong>Visão crítica:</strong> ${post.angles?.critical || ""}</div><div><strong>Observar:</strong> ${post.angles?.watch || ""}</div>`;
+      document.getElementById("readerSource").href = post.sourceUrl;
+      document.getElementById("reader").classList.add("open");
+      document.body.style.overflow = "hidden";
+    }
+    document.getElementById("close").onclick = () => { document.getElementById("reader").classList.remove("open"); document.body.style.overflow = ""; };
+    document.getElementById("reader").onclick = (event) => { if (event.target.id === "reader") document.getElementById("close").click(); };
+    document.getElementById("search").oninput = (event) => { state.query = event.target.value; render(); };
+    loadPosts();
+  </script>
+</body>
+</html>

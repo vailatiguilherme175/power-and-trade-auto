@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Power & Trade | Admin</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Playfair+Display:wght@700&family=Space+Mono&display=swap");
+    :root { --bg:#080808; --panel:#111; --line:rgba(255,255,255,.14); --text:#f4f1e8; --muted:#b7b0a2; --gold:#b8962e; }
+    * { box-sizing:border-box; } body { margin:0; background:var(--bg); color:var(--text); font-family:Inter,sans-serif; } .wrap { width:min(1180px, calc(100% - 32px)); margin:0 auto; padding:2rem 0; }
+    h1,h2,h3 { font-family:"Playfair Display",serif; } a { color:var(--gold); } .top { display:flex; justify-content:space-between; gap:1rem; align-items:center; border-bottom:1px solid var(--line); padding-bottom:1rem; margin-bottom:1rem; }
+    button, input, textarea, select { font:inherit; } button { border:1px solid var(--gold); background:var(--gold); color:#080808; border-radius:4px; padding:.65rem .9rem; font-weight:800; cursor:pointer; } button.secondary { background:transparent; color:var(--text); border-color:var(--line); }
+    .grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; } .panel, article { border:1px solid var(--line); background:rgba(255,255,255,.03); border-radius:8px; padding:1rem; }
+    .list { display:grid; gap:.8rem; } .label { font-family:"Space Mono",monospace; color:var(--gold); text-transform:uppercase; font-size:.72rem; } p { color:var(--muted); } textarea, input, select { width:100%; background:#090909; color:var(--text); border:1px solid var(--line); border-radius:4px; padding:.7rem; margin:.35rem 0 .75rem; }
+    .actions { display:flex; flex-wrap:wrap; gap:.5rem; } .status { color:var(--gold); min-height:1.5rem; } @media (max-width:900px){ .grid{grid-template-columns:1fr}.top{align-items:start; flex-direction:column} }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div><h1>Power & Trade Admin</h1><p>Painel local para revisar rascunhos, aprovar posts e exportar JSONs. O site público lê `data/posts.json`.</p></div>
+      <div class="actions"><a href="index.html">Ver site</a><button id="downloadPosts">Baixar posts.json</button><button id="downloadDrafts" class="secondary">Baixar drafts.json</button></div>
+    </div>
+    <div class="panel"><span class="label">Fluxo correto</span><p>1. Rode <code>npm run fetch:news</code>. 2. Revise os rascunhos abaixo. 3. Aprove somente o que tiver fonte verificável. 4. Baixe/substitua os JSONs ou rode <code>npm run publish:approved</code> após marcar status como approved.</p><p class="status" id="status"></p></div>
+    <div class="grid">
+      <section><h2>Rascunhos</h2><div class="list" id="drafts"></div></section>
+      <section><h2>Publicados</h2><div class="list" id="posts"></div></section>
+    </div>
+  </div>
+  <script>
+    const state = { posts: [], drafts: [] };
+    const status = (msg) => document.getElementById("status").textContent = msg;
+    async function load() {
+      state.posts = await (await fetch("data/posts.json", { cache:"no-store" })).json();
+      state.drafts = await (await fetch("data/drafts.json", { cache:"no-store" })).json();
+      render();
+    }
+    function render() {
+      document.getElementById("drafts").innerHTML = state.drafts.map((item, index) => card(item, index, "draft")).join("") || "<p>Nenhum rascunho.</p>";
+      document.getElementById("posts").innerHTML = state.posts.map((item, index) => card(item, index, "post")).join("") || "<p>Nenhum post publicado.</p>";
+      bind();
+    }
+    function card(item, index, type) {
+      return `<article><span class="label">${item.category} | ${item.sourceName || "sem fonte"}</span><h3>${item.title}</h3><p>${item.summary}</p><p><a href="${item.sourceUrl}" target="_blank">Fonte original</a></p>${type === "draft" ? `<label>Status</label><select data-field="status" data-index="${index}"><option ${item.status==="draft"?"selected":""}>draft</option><option ${item.status==="approved"?"selected":""}>approved</option><option ${item.status==="rejected"?"selected":""}>rejected</option></select><label>Título</label><input data-field="title" data-index="${index}" value="${escapeHtml(item.title)}"><label>Resumo</label><textarea data-field="summary" data-index="${index}">${escapeHtml(item.summary)}</textarea><div class="actions"><button data-approve="${index}">Aprovar agora</button><button class="secondary" data-reject="${index}">Rejeitar</button></div>` : ""}</article>`;
+    }
+    function escapeHtml(value = "") { return value.replace(/[&<>"']/g, (char) => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[char])); }
+    function bind() {
+      document.querySelectorAll("[data-field]").forEach((input) => input.oninput = () => { state.drafts[Number(input.dataset.index)][input.dataset.field] = input.value; status("Alteração feita no navegador. Baixe o JSON para salvar."); });
+      document.querySelectorAll("[data-approve]").forEach((btn) => btn.onclick = () => { const draft = state.drafts.splice(Number(btn.dataset.approve), 1)[0]; draft.status = "published"; draft.publishedAt = new Date().toISOString(); state.posts.unshift(draft); render(); status("Rascunho aprovado localmente. Baixe posts.json e drafts.json."); });
+      document.querySelectorAll("[data-reject]").forEach((btn) => btn.onclick = () => { state.drafts[Number(btn.dataset.reject)].status = "rejected"; render(); status("Rascunho rejeitado localmente. Baixe drafts.json para salvar."); });
+    }
+    function download(name, data) { const blob = new Blob([JSON.stringify(data, null, 2) + "\n"], { type:"application/json" }); const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = name; a.click(); URL.revokeObjectURL(a.href); }
+    document.getElementById("downloadPosts").onclick = () => download("posts.json", state.posts);
+    document.getElementById("downloadDrafts").onclick = () => download("drafts.json", state.drafts);
+    load().catch(() => status("Para abrir o admin localmente, rode npm run serve nesta pasta."));
+  </script>
+</body>
+</html>

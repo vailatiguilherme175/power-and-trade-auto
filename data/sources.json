@@ -1,0 +1,27 @@
+[
+  {
+    "name": "Brasil e geopolítica",
+    "category": "Brasil Global",
+    "rss": "https://news.google.com/rss/search?q=Brasil%20geopol%C3%ADtica%20com%C3%A9rcio%20internacional%20when%3A1d&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+  },
+  {
+    "name": "Energia e petróleo",
+    "category": "Energia",
+    "rss": "https://news.google.com/rss/search?q=petr%C3%B3leo%20energia%20Brasil%20geopol%C3%ADtica%20when%3A1d&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+  },
+  {
+    "name": "Comércio internacional",
+    "category": "Comércio",
+    "rss": "https://news.google.com/rss/search?q=Brasil%20com%C3%A9rcio%20internacional%20exporta%C3%A7%C3%B5es%20when%3A1d&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+  },
+  {
+    "name": "Risco-país",
+    "category": "Risco-País",
+    "rss": "https://news.google.com/rss/search?q=Brasil%20risco-pa%C3%ADs%20mercado%20fiscal%20when%3A1d&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+  },
+  {
+    "name": "América Latina",
+    "category": "América Latina",
+    "rss": "https://news.google.com/rss/search?q=Am%C3%A9rica%20Latina%20Brasil%20diplomacia%20when%3A1d&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+  }
+]

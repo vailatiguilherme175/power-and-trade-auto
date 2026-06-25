@@ -1,0 +1,26 @@
+name: Power & Trade Daily Drafts
+
+on:
+  schedule:
+    - cron: "0 9 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fetch-drafts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm run daily
+      - name: Commit generated drafts
+        run: |
+          git config user.name "power-trade-bot"
+          git config user.email "bot@powerandtrade.local"
+          git add data/drafts.json data/editorial-log.json
+          git diff --cached --quiet || git commit -m "Generate daily Power & Trade drafts"
+          git push

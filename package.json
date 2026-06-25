@@ -1,0 +1,13 @@
+{
+  "name": "power-and-trade-auto",
+  "version": "4.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "serve": "node scripts/serve.mjs",
+    "fetch:news": "node scripts/fetch-news.mjs",
+    "validate": "node scripts/validate-content.mjs",
+    "publish:approved": "node scripts/publish-approved.mjs",
+    "daily": "node scripts/fetch-news.mjs && node scripts/validate-content.mjs"
+  }
+}
