@@ -26,15 +26,15 @@ Ela gera rascunhos com:
 - status `draft`;
 - `canPublishAutomatically: false`.
 
-Você revisa, ajusta e aprova. Só então o item pode virar post publicado.
+Você revisa, ajusta e aprova. A aprovação no `admin.html` prepara o pacote local de publicação; o item só entra no site público depois que `data/posts.json` e `data/drafts.json` forem salvos no GitHub e o Netlify fizer o deploy.
 
 ## Rotina diária com o ChatGPT
 
 1. Peça o briefing diário no ChatGPT usando o prompt editorial de geopolítica, conflitos, comércio, energia, commodities, risco-país e Brasil no cenário global.
 2. Abra `admin.html`.
 3. Para cada notícia boa, crie um rascunho com título, fonte, link, resumo, impacto para Brasil/negócios/mercados e ângulo editorial.
-4. Aprove apenas rascunhos com fonte verificável e análise suficiente.
-5. Baixe `posts.json` e `drafts.json`, substitua os arquivos dentro de `data/` e envie para o GitHub.
+4. Prepare para publicação apenas rascunhos com fonte verificável e análise suficiente.
+5. Baixe `posts.json` e `drafts.json`, substitua os arquivos dentro de `data/` e envie para o GitHub. Sem essa etapa, a mudança fica só no navegador e não aparece no site ao recarregar.
 
 O objetivo é manter a IA ajudando na triagem, mas preservar revisão humana antes da publicação.
 

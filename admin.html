@@ -260,25 +260,25 @@
       <div>
         <span class="kicker">Mesa editorial</span>
         <h1>Power & Trade Admin</h1>
-        <p>Transforme o briefing diário em rascunhos com fonte, impacto para o Brasil e revisão humana antes de publicar.</p>
+        <p>Transforme o briefing diário em rascunhos com fonte e impacto. A publicação real só acontece quando os JSONs são salvos no GitHub e o Netlify faz deploy.</p>
       </div>
       <div class="actions">
         <a href="index.html">Ver site</a>
-        <button id="downloadPosts">Baixar posts.json</button>
-        <button id="downloadDrafts" class="secondary">Baixar drafts.json</button>
+        <button id="downloadPosts">Baixar posts.json atualizado</button>
+        <button id="downloadDrafts" class="secondary">Baixar drafts.json atualizado</button>
       </div>
     </header>
 
     <section class="metrics" aria-label="Métricas editoriais">
       <div class="metric"><span class="label">Rascunhos</span><strong id="metricDrafts">0</strong><p>Pendentes de revisão.</p></div>
-      <div class="metric"><span class="label">Publicados</span><strong id="metricPosts">0</strong><p>Entram no portal público.</p></div>
+      <div class="metric"><span class="label">Posts/pacote</span><strong id="metricPosts">0</strong><p>Só entram no ar após salvar no GitHub.</p></div>
       <div class="metric"><span class="label">Com fonte</span><strong id="metricSources">0</strong><p>Itens com link verificável.</p></div>
       <div class="metric"><span class="label">Rejeitados</span><strong id="metricRejected">0</strong><p>Não devem ser publicados.</p></div>
     </section>
 
     <section class="notice">
       <span class="label">Rotina segura</span>
-      <p>Use o ChatGPT para receber o briefing, escolha os temas realmente importantes, cole cada item no formulário abaixo e aprove apenas o que tiver fonte confiável. O painel não publica sozinho: ele prepara os arquivos para revisão e atualização do site.</p>
+      <p>Use o ChatGPT para receber o briefing, escolha os temas realmente importantes, cole cada item no formulário abaixo e aprove apenas o que tiver fonte confiável. Este painel é estático: ele não grava no servidor sozinho. Ao aprovar, ele prepara um pacote local; para ir ao ar, baixe os JSONs atualizados, substitua os arquivos em <strong>data/</strong>, envie ao GitHub e aguarde o deploy do Netlify.</p>
       <p class="status" id="status"></p>
     </section>
 
@@ -364,7 +364,7 @@ Formato: resumo executivo; notícias por bloco; radar de risco; sugestões de ra
         <div class="list" id="drafts"></div>
       </section>
       <section>
-        <h2>Publicados</h2>
+        <h2>Posts atuais e pacote local</h2>
         <div class="list" id="posts"></div>
       </section>
     </section>
@@ -417,7 +417,7 @@ Formato: resumo executivo; notícias por bloco; radar de risco; sugestões de ra
         <div class="post-meta">
           <span class="pill">${escapeHtml(item.sourceName || "fonte não informada")}</span>
           <span class="pill">${escapeHtml(item.publishedAt ? formatDate(item.publishedAt) : item.generatedAt ? formatDate(item.generatedAt) : "sem data")}</span>
-          <span class="pill">${escapeHtml(item.status || type)}</span>
+          <span class="pill">${escapeHtml(item.publishState === "prepared-for-github" ? "preparado localmente" : item.status || type)}</span>
         </div>
         <p>${source}</p>
         ${type === "draft" ? draftControls(item, index, body, checks) : ""}
@@ -442,11 +442,12 @@ Formato: resumo executivo; notícias por bloco; radar de risco; sugestões de ra
       <label>Análise</label>
       <textarea data-field="body" data-index="${index}">${escapeHtml(body)}</textarea>
       <div class="actions">
-        <button data-approve="${index}" ${ready ? "" : "disabled"}>Aprovar e publicar</button>
+        <button data-approve="${index}" ${ready ? "" : "disabled"}>Preparar publicação</button>
         <button class="secondary" data-keep="${index}">Manter rascunho</button>
         <button class="danger" data-reject="${index}">Rejeitar</button>
       </div>
-      ${ready ? "" : "<p class='bad'>Complete fonte, resumo e impacto antes de publicar.</p>"}`;
+      <p class="field-help">Este botão prepara o post no navegador. Para aparecer no site público, baixe os JSONs atualizados e suba no GitHub.</p>
+      ${ready ? "" : "<p class='bad'>Complete fonte, resumo e impacto antes de preparar a publicação.</p>"}`;
     }
 
     function getChecks(item) {
@@ -475,15 +476,16 @@ Formato: resumo executivo; notícias por bloco; radar de risco; sugestões de ra
           const draft = state.drafts.splice(Number(btn.dataset.approve), 1)[0];
           draft.status = "published";
           draft.publishedAt = new Date().toISOString();
+          draft.publishState = "prepared-for-github";
           draft.editorialChecks = { ...(draft.editorialChecks || {}), approvedByHuman: true, canPublishAutomatically: false };
           state.posts.unshift(draft);
           render();
-          setStatus("Rascunho aprovado localmente. Baixe posts.json e drafts.json e suba no GitHub para atualizar o site.");
+          setStatus("Preparado, mas ainda NÃO está no ar. Baixe posts.json e drafts.json, substitua os arquivos em data/ e suba no GitHub; depois o Netlify publica.");
         };
       });
 
       document.querySelectorAll("[data-keep]").forEach((btn) => {
-        btn.onclick = () => setStatus("Rascunho mantido. Revise com calma antes de publicar.");
+        btn.onclick = () => setStatus("Rascunho mantido. Revise com calma antes de preparar a publicação.");
       });
 
       document.querySelectorAll("[data-reject]").forEach((btn) => {
