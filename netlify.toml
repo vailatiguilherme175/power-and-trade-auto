@@ -1,2 +1,5 @@
+[build.environment]
+  SECRETS_SCAN_OMIT_KEYS = "ADMIN_SECRET,GITHUB_TOKEN"
+
 [functions]
   directory = "netlify/functions"
