@@ -458,8 +458,8 @@ Formato: resumo executivo; notícias por bloco; radar de risco; sugestões de ra
           if (input.dataset.field === "body") draft.body = input.value.split(/\n{2,}/).map((part) => part.trim()).filter(Boolean);
           else draft[input.dataset.field] = input.value;
           setStatus("Alteração feita no navegador. Baixe os JSONs para salvar.");
-          render();
         };
+        input.onchange = () => render();
       });
 
       document.querySelectorAll("[data-approve]").forEach((btn) => {
