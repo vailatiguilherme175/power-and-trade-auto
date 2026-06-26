@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://power-and-trade-br.netlify.app/sitemap.xml
