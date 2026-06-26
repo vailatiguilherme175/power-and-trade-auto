@@ -6,6 +6,7 @@ Portal editorial automático para Power & Trade.
 
 - Site público em `index.html`, lendo `data/posts.json`.
 - Painel admin em `admin.html`, lendo `data/drafts.json` e `data/posts.json`.
+- Função segura de publicação em `netlify/functions/publish.js`.
 - Script diário para buscar fontes RSS e gerar rascunhos: `npm run fetch:news`.
 - Validação editorial: `npm run validate`.
 - Publicação de rascunhos aprovados: `npm run publish:approved`.
@@ -26,7 +27,27 @@ Ela gera rascunhos com:
 - status `draft`;
 - `canPublishAutomatically: false`.
 
-Você revisa, ajusta e aprova. A aprovação no `admin.html` prepara o pacote local de publicação; o item só entra no site público depois que `data/posts.json` e `data/drafts.json` forem salvos no GitHub e o Netlify fizer o deploy.
+Você revisa, ajusta e prepara a publicação. O item só entra no site público quando `data/posts.json` e `data/drafts.json` forem salvos no GitHub e o Netlify fizer o deploy.
+
+O botão `Publicar no GitHub/Netlify` faz isso automaticamente somente se a função segura estiver configurada no Netlify com as variáveis abaixo. Sem essas variáveis, o painel não publica e mostra aviso.
+
+## Configurar publicação real pelo admin
+
+No Netlify, abra o projeto e vá em `Project configuration` > `Environment variables`. Crie:
+
+- `ADMIN_SECRET`: uma senha forte para publicar pelo admin.
+- `GITHUB_TOKEN`: token do GitHub com permissão de `Contents: Read and write` no repositório `power-and-trade-auto`.
+- `GITHUB_OWNER`: `vailatiguilherme175` (opcional, já é o padrão).
+- `GITHUB_REPO`: `power-and-trade-auto` (opcional, já é o padrão).
+- `GITHUB_BRANCH`: `main` (opcional, já é o padrão).
+
+Depois faça um novo deploy no Netlify. A partir daí, no `admin.html`, o fluxo correto é:
+
+1. Criar ou revisar rascunho.
+2. Clicar em `Preparar publicação`.
+3. Clicar em `Publicar no GitHub/Netlify`.
+4. Digitar a senha definida em `ADMIN_SECRET`.
+5. Aguardar o commit no GitHub e o deploy do Netlify.
 
 ## Rotina diária com o ChatGPT
 
@@ -34,7 +55,7 @@ Você revisa, ajusta e aprova. A aprovação no `admin.html` prepara o pacote lo
 2. Abra `admin.html`.
 3. Para cada notícia boa, crie um rascunho com título, fonte, link, resumo, impacto para Brasil/negócios/mercados e ângulo editorial.
 4. Prepare para publicação apenas rascunhos com fonte verificável e análise suficiente.
-5. Baixe `posts.json` e `drafts.json`, substitua os arquivos dentro de `data/` e envie para o GitHub. Sem essa etapa, a mudança fica só no navegador e não aparece no site ao recarregar.
+5. Clique em `Publicar no GitHub/Netlify`. Se a função segura ainda não estiver configurada, baixe `posts.json` e `drafts.json`, substitua os arquivos dentro de `data/` e envie para o GitHub.
 
 O objetivo é manter a IA ajudando na triagem, mas preservar revisão humana antes da publicação.
 

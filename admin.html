@@ -264,6 +264,7 @@
       </div>
       <div class="actions">
         <a href="index.html">Ver site</a>
+        <button id="publishOnline">Publicar no GitHub/Netlify</button>
         <button id="downloadPosts">Baixar posts.json atualizado</button>
         <button id="downloadDrafts" class="secondary">Baixar drafts.json atualizado</button>
       </div>
@@ -278,7 +279,7 @@
 
     <section class="notice">
       <span class="label">Rotina segura</span>
-      <p>Use o ChatGPT para receber o briefing, escolha os temas realmente importantes, cole cada item no formulário abaixo e aprove apenas o que tiver fonte confiável. Este painel é estático: ele não grava no servidor sozinho. Ao aprovar, ele prepara um pacote local; para ir ao ar, baixe os JSONs atualizados, substitua os arquivos em <strong>data/</strong>, envie ao GitHub e aguarde o deploy do Netlify.</p>
+      <p>Use o ChatGPT para receber o briefing, escolha os temas realmente importantes, cole cada item no formulário abaixo e aprove apenas o que tiver fonte confiável. Primeiro prepare a publicação. Depois use <strong>Publicar no GitHub/Netlify</strong> para gravar de verdade no repositório e disparar o deploy. Se a função segura ainda não estiver configurada no Netlify, o painel vai avisar e não vai fingir que publicou.</p>
       <p class="status" id="status"></p>
     </section>
 
@@ -480,7 +481,7 @@ Formato: resumo executivo; notícias por bloco; radar de risco; sugestões de ra
           draft.editorialChecks = { ...(draft.editorialChecks || {}), approvedByHuman: true, canPublishAutomatically: false };
           state.posts.unshift(draft);
           render();
-          setStatus("Preparado, mas ainda NÃO está no ar. Baixe posts.json e drafts.json, substitua os arquivos em data/ e suba no GitHub; depois o Netlify publica.");
+          setStatus("Preparado, mas ainda NÃO está no ar. Agora clique em Publicar no GitHub/Netlify. Se a função segura ainda não estiver configurada, baixe os JSONs e suba no GitHub.");
         };
       });
 
@@ -560,6 +561,52 @@ Formato: resumo executivo; notícias por bloco; radar de risco; sugestões de ra
 
     document.getElementById("downloadPosts").onclick = () => download("posts.json", state.posts);
     document.getElementById("downloadDrafts").onclick = () => download("drafts.json", state.drafts);
+    document.getElementById("publishOnline").onclick = publishOnline;
+
+    async function publishOnline() {
+      const secret = sessionStorage.getItem("powerTradeAdminSecret") || prompt("Senha de publicação do Power & Trade:");
+      if (!secret) {
+        setStatus("Publicação cancelada. Nenhum dado foi enviado.");
+        return;
+      }
+
+      setStatus("Enviando pacote ao GitHub. Aguarde a resposta antes de recarregar.");
+      try {
+        const response = await fetch("/.netlify/functions/publish", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+            "x-admin-secret": secret
+          },
+          body: JSON.stringify({ posts: state.posts, drafts: state.drafts })
+        });
+        const result = await response.json().catch(() => ({}));
+
+        if (response.status === 401) {
+          sessionStorage.removeItem("powerTradeAdminSecret");
+          setStatus("Senha incorreta. Nada foi publicado.");
+          return;
+        }
+
+        if (response.status === 501) {
+          setStatus(result.message || "Publicação real ainda não configurada no Netlify. Configure GITHUB_TOKEN e ADMIN_SECRET.");
+          return;
+        }
+
+        if (!response.ok) {
+          setStatus(result.message || "Falha ao publicar. Nada foi gravado no GitHub.");
+          return;
+        }
+
+        sessionStorage.setItem("powerTradeAdminSecret", secret);
+        state.posts = result.posts || state.posts;
+        state.drafts = result.drafts || state.drafts;
+        render();
+        setStatus(`Publicado de verdade no GitHub. Commit ${result.commit?.slice(0, 7) || "criado"}. Aguarde o deploy do Netlify.`);
+      } catch (error) {
+        setStatus("Não consegui conectar com a função de publicação. Nada foi gravado no GitHub.");
+      }
+    }
 
     function value(id) {
       return document.getElementById(id).value.trim();
