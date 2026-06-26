@@ -88,6 +88,13 @@
       font-weight: 700;
     }
 
+    .field-help {
+      margin: -.45rem 0 .9rem;
+      color: var(--muted);
+      font-size: .82rem;
+      line-height: 1.45;
+    }
+
     .wrap {
       width: min(1280px, calc(100% - 32px));
       margin: 0 auto;
@@ -322,8 +329,9 @@
             </select>
           </div>
           <div>
-            <label for="image">Imagem relacionada</label>
-            <input id="image" type="url" placeholder="URL de imagem coerente com a pauta" />
+            <label for="image">Imagem real/licenciada</label>
+            <input id="image" type="url" placeholder="URL de Wikimedia, Unsplash, Pexels, foto oficial ou press kit" />
+            <p class="field-help">Use imagem real e relacionada ao fato. Evite IA, imagem aleatória ou foto de veículo fechado sem direito de uso.</p>
           </div>
           <div class="full">
             <label for="angle">Ângulo sugerido</label>
