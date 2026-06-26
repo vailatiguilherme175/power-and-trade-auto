@@ -28,6 +28,16 @@ Ela gera rascunhos com:
 
 Você revisa, ajusta e aprova. Só então o item pode virar post publicado.
 
+## Rotina diária com o ChatGPT
+
+1. Peça o briefing diário no ChatGPT usando o prompt editorial de geopolítica, conflitos, comércio, energia, commodities, risco-país e Brasil no cenário global.
+2. Abra `admin.html`.
+3. Para cada notícia boa, crie um rascunho com título, fonte, link, resumo, impacto para Brasil/negócios/mercados e ângulo editorial.
+4. Aprove apenas rascunhos com fonte verificável e análise suficiente.
+5. Baixe `posts.json` e `drafts.json`, substitua os arquivos dentro de `data/` e envie para o GitHub.
+
+O objetivo é manter a IA ajudando na triagem, mas preservar revisão humana antes da publicação.
+
 ## Rodar localmente
 
 ```bash
