@@ -1,3 +1,5 @@
+import { Buffer } from "node:buffer";
+
 const jsonHeaders = {
   "content-type": "application/json; charset=utf-8",
   "cache-control": "no-store"
