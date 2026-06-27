@@ -1,0 +1,57 @@
+backend:
+  name: git-gateway
+  branch: main
+
+locale: pt
+site_url: https://power-and-trade-br.netlify.app
+display_url: https://power-and-trade-br.netlify.app
+show_preview_links: false
+publish_mode: simple
+
+media_folder: media/uploads
+public_folder: /media/uploads
+
+slug:
+  encoding: ascii
+  clean_accents: true
+  sanitize_replacement: "-"
+
+collections:
+  - name: artigos
+    label: Artigos
+    label_singular: Artigo
+    description: Notícias e análises publicadas no Power & Trade.
+    folder: content/posts
+    create: true
+    delete: true
+    extension: json
+    format: json
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    summary: "{{title}} — {{sourceName}}"
+    editor:
+      preview: false
+    fields:
+      - { label: Título, name: title, widget: string }
+      - label: Data de publicação
+        name: publishedAt
+        widget: datetime
+        date_format: DD/MM/YYYY
+        time_format: HH:mm
+        format: YYYY-MM-DDTHH:mm:ssZ
+      - label: Tema
+        name: category
+        widget: select
+        options: [Geopolítica, Conflitos, Comércio, Energia, Commodities, Risco-País, Brasil Global, Mercados, Tecnologia]
+      - label: Região
+        name: topic
+        widget: select
+        options: [Global, Brasil Global, América Latina, América do Norte, Europa, Ásia-Pacífico, Oriente Médio, África]
+        default: Global
+      - { label: Resumo para a capa, name: summary, widget: text }
+      - { label: Texto completo, name: body, widget: text }
+      - { label: Nome da fonte, name: sourceName, widget: string }
+      - { label: Link da fonte, name: sourceUrl, widget: string, pattern: ['^https?://', 'Informe um link começando com http:// ou https://'] }
+      - { label: Imagem, name: image, widget: image, choose_url: true, media_library: { config: { multiple: false } } }
+      - { label: Visão favorável, name: pro, widget: text, required: false }
+      - { label: Visão crítica, name: critical, widget: text, required: false }
+      - { label: O que acompanhar, name: watch, widget: text, required: false }

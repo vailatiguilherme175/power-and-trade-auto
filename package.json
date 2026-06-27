@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "build": "node scripts/build-content.mjs",
     "serve": "node scripts/serve.mjs",
     "fetch:news": "node scripts/fetch-news.mjs",
     "validate": "node scripts/validate-content.mjs",

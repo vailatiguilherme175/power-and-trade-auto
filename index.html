@@ -99,7 +99,7 @@
   <header>
     <div class="container head">
       <a class="logo" href="#">POWER <span>&amp;</span> TRADE</a>
-      <nav><a href="#analises">Análises</a><a href="#risco">Risco-País</a><a href="#profundas">Relatórios</a><a href="admin.html">Admin</a></nav>
+      <nav><a href="#analises">Análises</a><a href="#risco">Risco-País</a><a href="#profundas">Relatórios</a><a href="/admin/">Admin</a></nav>
       <input id="search" class="search" type="search" placeholder="Buscar" />
     </div>
   </header>
@@ -248,6 +248,14 @@
     document.getElementById("reader").onclick = (event) => { if (event.target.id === "reader") document.getElementById("close").click(); };
     document.getElementById("search").oninput = (event) => { state.query = event.target.value; render(); };
     loadPosts();
+  </script>
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <script>
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on("init", (user) => {
+        if (!user) window.netlifyIdentity.on("login", () => { document.location.href = "/admin/"; });
+      });
+    }
   </script>
 </body>
 </html>
