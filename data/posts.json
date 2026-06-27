@@ -1,5 +1,28 @@
 [
   {
+    "id": "hormuz-seguranca-maritima-2026-06-26",
+    "status": "published",
+    "category": "Geopolítica",
+    "topic": "Energia e Conflitos",
+    "publishedAt": "2026-06-26T16:30:00-03:00",
+    "sourceName": "Reuters",
+    "sourceUrl": "https://www.reuters.com/world/middle-east/iran-insists-right-control-shipping-strait-hormuz-after-ship-hit-near-oman-2026-06-26/",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Strait_of_Hormuz-svg-en.svg/1200px-Strait_of_Hormuz-svg-en.svg.png",
+    "title": "Tensão em Hormuz reacende risco sobre petróleo, fretes e segurança marítima global",
+    "summary": "Após uma embarcação ser atingida perto de Omã, versões divergentes entre autoridades dos Estados Unidos e o Irã voltam a elevar a atenção sobre uma das rotas mais críticas para o petróleo e o gás mundial.",
+    "body": [
+      "Em 26 de junho de 2026, o Irã reafirmou seu direito de controlar a navegação no Estreito de Hormuz após um navio operado por uma empresa taiwanesa ser atingido perto de Omã. Segundo autoridades dos Estados Unidos ouvidas pela Reuters, o Irã teria disparado contra a embarcação. Teerã contesta essa versão, por isso a responsabilidade pelo episódio não deve ser apresentada como fato definitivamente estabelecido.",
+      "O incidente reforça a fragilidade de uma passagem marítima essencial para o comércio mundial de petróleo e gás. Mesmo sem uma interrupção prolongada, o aumento da percepção de risco pode pressionar seguros marítimos, fretes, prazos logísticos e preços de energia.",
+      "Para o Brasil, o efeito é misto. Como exportador líquido de petróleo, o país pode se beneficiar de preços internacionais mais altos no curto prazo. Ao mesmo tempo, empresas e consumidores ficam expostos à alta de combustíveis, fretes e seguros, enquanto o agronegócio pode sentir efeitos sobre fertilizantes importados. A tensão também tende a aumentar a volatilidade cambial e a incerteza nos mercados globais.",
+      "Empresas brasileiras com cadeias internacionais devem acompanhar rotas, contratos de seguro, estoques críticos e mecanismos de proteção de preços. O principal risco não está apenas no preço do barril, mas na transmissão do choque para transporte, inflação e continuidade operacional."
+    ],
+    "angles": {
+      "pro": "Preços mais altos do petróleo podem favorecer receitas de exportação e empresas produtoras brasileiras no curto prazo.",
+      "critical": "A escalada pode elevar custos de combustíveis, fretes, seguros e fertilizantes, pressionando inflação e margens empresariais.",
+      "watch": "Novas informações verificadas sobre o incidente, resposta iraniana, movimentação naval, fluxo de petroleiros, preço do Brent e custo do seguro marítimo."
+    }
+  },
+  {
     "id": "petrobras-transicao-2026-06-25",
     "status": "published",
     "category": "Energia",
