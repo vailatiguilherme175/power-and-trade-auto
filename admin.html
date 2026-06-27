@@ -119,7 +119,7 @@
       button.disabled = true;
       showStatus("Gravando o artigo no GitHub...", "working");
       try {
-        const response = await fetch("/.netlify/functions/publish", {
+        const response = await fetchWithRetry("/api/publish", {
           method:"POST",
           headers:{ "content-type":"application/json", "x-admin-secret":secret },
           body:JSON.stringify({ article })
@@ -171,9 +171,20 @@
     }
 
     async function fetchPosts() {
-      const response = await fetch(`data/posts.json?v=${Date.now()}`, { cache:"no-store" });
+      const response = await fetchWithRetry(`/data/posts.json?v=${Date.now()}`, { cache:"no-store" });
       if (!response.ok) throw new Error("posts.json indisponível");
       return response.json();
+    }
+    async function fetchWithRetry(url, options, attempts=3) {
+      let lastError;
+      for (let attempt=1; attempt<=attempts; attempt++) {
+        try { return await fetch(url, options); }
+        catch (error) {
+          lastError=error;
+          if (attempt<attempts) await sleep(1200*attempt);
+        }
+      }
+      throw new Error(lastError?.message === "Failed to fetch" ? "O navegador bloqueou a conexão com o servidor. Atualize a página e tente novamente." : lastError?.message || "Falha de conexão.");
     }
     function value(id){ return document.getElementById(id).value.trim(); }
     function sleep(ms){ return new Promise((resolve) => setTimeout(resolve,ms)); }

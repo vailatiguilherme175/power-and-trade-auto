@@ -1,5 +1,11 @@
 [build.environment]
   SECRETS_SCAN_OMIT_KEYS = "ADMIN_SECRET,GITHUB_TOKEN"
 
+[[redirects]]
+  from = "/api/publish"
+  to = "/.netlify/functions/publish"
+  status = 200
+  force = true
+
 [functions]
   directory = "netlify/functions"
