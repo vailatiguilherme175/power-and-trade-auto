@@ -1,643 +1,185 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Power & Trade | Admin Editorial</title>
-  <meta name="robots" content="noindex, nofollow" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Power & Trade | Publicar artigo</title>
   <style>
     @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Playfair+Display:wght@700&family=Space+Mono&display=swap");
-
-    :root {
-      --bg: #080808;
-      --panel: #111;
-      --panel-2: #151515;
-      --line: rgba(255,255,255,.14);
-      --text: #f4f1e8;
-      --muted: #b7b0a2;
-      --gold: #b8962e;
-      --green: #69c28a;
-      --red: #e36d63;
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      background: radial-gradient(circle at top right, rgba(184,150,46,.12), transparent 28rem), var(--bg);
-      color: var(--text);
-      font-family: Inter, sans-serif;
-    }
-
-    a { color: var(--gold); }
-    h1, h2, h3 { font-family: "Playfair Display", serif; line-height: 1.04; }
-    h1 { margin: 0; font-size: clamp(2.4rem, 6vw, 5rem); }
-    h2 { margin: 0 0 1rem; font-size: clamp(1.6rem, 3vw, 2.4rem); }
-    h3 { margin: .35rem 0 .5rem; font-size: 1.35rem; }
-    p { color: var(--muted); line-height: 1.65; }
-    code { color: var(--text); }
-
-    button, input, textarea, select {
-      font: inherit;
-    }
-
-    button {
-      border: 1px solid var(--gold);
-      background: var(--gold);
-      color: #080808;
-      border-radius: 4px;
-      padding: .72rem 1rem;
-      font-weight: 800;
-      cursor: pointer;
-    }
-
-    button.secondary {
-      background: transparent;
-      color: var(--text);
-      border-color: var(--line);
-    }
-
-    button.danger {
-      background: transparent;
-      color: var(--red);
-      border-color: rgba(227,109,99,.55);
-    }
-
-    button:disabled {
-      cursor: not-allowed;
-      opacity: .45;
-    }
-
-    input, textarea, select {
-      width: 100%;
-      background: #090909;
-      color: var(--text);
-      border: 1px solid var(--line);
-      border-radius: 4px;
-      padding: .78rem;
-      margin: .35rem 0 .85rem;
-      outline: none;
-    }
-
-    textarea { min-height: 7.5rem; resize: vertical; }
-
-    label {
-      display: block;
-      color: var(--muted);
-      font-size: .9rem;
-      font-weight: 700;
-    }
-
-    .field-help {
-      margin: -.45rem 0 .9rem;
-      color: var(--muted);
-      font-size: .82rem;
-      line-height: 1.45;
-    }
-
-    .wrap {
-      width: min(1280px, calc(100% - 32px));
-      margin: 0 auto;
-      padding: 2rem 0 4rem;
-    }
-
-    .top {
-      display: flex;
-      justify-content: space-between;
-      gap: 1.5rem;
-      align-items: end;
-      border-bottom: 1px solid var(--line);
-      padding-bottom: 1.4rem;
-      margin-bottom: 1.4rem;
-    }
-
-    .kicker, .label {
-      font-family: "Space Mono", monospace;
-      color: var(--gold);
-      text-transform: uppercase;
-      letter-spacing: .08em;
-      font-size: .72rem;
-    }
-
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: .55rem;
-      align-items: center;
-    }
-
-    .panel, article, .metric, .notice {
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.035);
-      border-radius: 8px;
-    }
-
-    .panel, .notice { padding: 1rem; }
-
-    .metrics {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: .8rem;
-      margin: 1.2rem 0;
-    }
-
-    .metric {
-      padding: 1rem;
-      min-height: 7.5rem;
-    }
-
-    .metric strong {
-      display: block;
-      margin-top: .35rem;
-      font-size: 2rem;
-    }
-
-    .workspace {
-      display: grid;
-      grid-template-columns: minmax(0, 1.05fr) minmax(320px, .75fr);
-      gap: 1rem;
-      align-items: start;
-    }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0 .8rem;
-    }
-
-    .full { grid-column: 1 / -1; }
-
-    .list {
-      display: grid;
-      gap: .9rem;
-    }
-
-    article {
-      position: relative;
-      overflow: hidden;
-      padding: 1rem;
-    }
-
-    article::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 3px;
-      height: 100%;
-      background: var(--gold);
-      opacity: .55;
-    }
-
-    .post-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: .45rem;
-      margin: .6rem 0 .2rem;
-    }
-
-    .pill {
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      color: var(--muted);
-      font-family: "Space Mono", monospace;
-      font-size: .72rem;
-      padding: .25rem .55rem;
-    }
-
-    .ok { color: var(--green); }
-    .bad { color: var(--red); }
-
-    .checklist {
-      display: grid;
-      gap: .35rem;
-      margin: .75rem 0;
-      color: var(--muted);
-      font-size: .92rem;
-    }
-
-    .status {
-      min-height: 1.6rem;
-      color: var(--gold);
-      font-weight: 800;
-    }
-
-    .empty {
-      border: 1px dashed var(--line);
-      padding: 1rem;
-      border-radius: 8px;
-    }
-
-    .prompt-box {
-      background: var(--panel-2);
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 1rem;
-      white-space: pre-wrap;
-      color: var(--muted);
-      font-size: .92rem;
-      line-height: 1.55;
-      max-height: 18rem;
-      overflow: auto;
-    }
-
-    @media (max-width: 980px) {
-      .top, .workspace { grid-template-columns: 1fr; }
-      .top { align-items: start; flex-direction: column; }
-      .metrics { grid-template-columns: 1fr 1fr; }
-      .form-grid { grid-template-columns: 1fr; }
-    }
-
-    @media (max-width: 620px) {
-      .metrics { grid-template-columns: 1fr; }
-      .actions button, .actions a { width: 100%; text-align: center; }
-    }
+    :root { --bg:#080808; --panel:#111; --line:rgba(255,255,255,.15); --text:#f4f1e8; --muted:#b7b0a2; --gold:#b8962e; --green:#69c28a; --red:#e36d63; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font-family:Inter,sans-serif; }
+    .wrap { width:min(980px,calc(100% - 28px)); margin:auto; padding:2rem 0 4rem; }
+    header { display:flex; justify-content:space-between; align-items:end; gap:1rem; border-bottom:1px solid var(--line); padding-bottom:1.3rem; margin-bottom:1.3rem; }
+    h1,h2 { font-family:"Playfair Display",serif; }
+    h1 { margin:.3rem 0; font-size:clamp(2.3rem,6vw,4.7rem); }
+    h2 { margin:.2rem 0 1.2rem; }
+    p { color:var(--muted); line-height:1.55; }
+    a { color:var(--gold); }
+    .label { color:var(--gold); font: .74rem "Space Mono",monospace; text-transform:uppercase; letter-spacing:.08em; }
+    .panel { border:1px solid var(--line); border-radius:8px; background:var(--panel); padding:clamp(1rem,3vw,2rem); }
+    form { display:grid; grid-template-columns:1fr 1fr; gap:0 1rem; }
+    .full { grid-column:1/-1; }
+    label { display:block; margin-top:.35rem; color:var(--muted); font-size:.9rem; font-weight:700; }
+    input,select,textarea { width:100%; margin:.4rem 0 .95rem; border:1px solid var(--line); border-radius:4px; background:#090909; color:var(--text); padding:.8rem; font:inherit; outline:none; }
+    input:focus,select:focus,textarea:focus { border-color:var(--gold); }
+    textarea { min-height:11rem; resize:vertical; }
+    #summary { min-height:6rem; }
+    button { width:100%; border:1px solid var(--gold); border-radius:4px; background:var(--gold); color:#080808; padding:1rem; font:800 1rem Inter,sans-serif; cursor:pointer; }
+    button:disabled { opacity:.55; cursor:wait; }
+    .status { display:none; margin-top:1rem; border:1px solid var(--line); border-radius:6px; padding:1rem; font-weight:700; }
+    .status.show { display:block; }
+    .status.working { color:var(--gold); }
+    .status.success { color:var(--green); border-color:rgba(105,194,138,.5); }
+    .status.error { color:var(--red); border-color:rgba(227,109,99,.5); }
+    .recent { margin-top:1.2rem; }
+    .recent article { border-top:1px solid var(--line); padding:.8rem 0; }
+    .recent h3 { margin:.3rem 0; font-family:"Playfair Display",serif; }
+    .help { margin-top:-.65rem; font-size:.8rem; }
+    @media(max-width:700px){ header{align-items:start;flex-direction:column} form{grid-template-columns:1fr}.full{grid-column:auto} }
   </style>
 </head>
 <body>
   <main class="wrap">
-    <header class="top">
-      <div>
-        <span class="kicker">Mesa editorial</span>
-        <h1>Power & Trade Admin</h1>
-        <p>Transforme o briefing diário em rascunhos com fonte e impacto. A publicação real só acontece quando os JSONs são salvos no GitHub e o Netlify faz deploy.</p>
-      </div>
-      <div class="actions">
-        <a href="index.html">Ver site</a>
-        <button id="publishOnline">Publicar no GitHub/Netlify</button>
-        <button id="downloadPosts">Baixar posts.json atualizado</button>
-        <button id="downloadDrafts" class="secondary">Baixar drafts.json atualizado</button>
-      </div>
+    <header>
+      <div><span class="label">Administração editorial</span><h1>Power & Trade</h1><p>Preencha, publique e aguarde a confirmação de que o artigo entrou no ar.</p></div>
+      <a href="index.html" target="_blank">Ver site público</a>
     </header>
 
-    <section class="metrics" aria-label="Métricas editoriais">
-      <div class="metric"><span class="label">Rascunhos</span><strong id="metricDrafts">0</strong><p>Pendentes de revisão.</p></div>
-      <div class="metric"><span class="label">Posts/pacote</span><strong id="metricPosts">0</strong><p>Só entram no ar após salvar no GitHub.</p></div>
-      <div class="metric"><span class="label">Com fonte</span><strong id="metricSources">0</strong><p>Itens com link verificável.</p></div>
-      <div class="metric"><span class="label">Rejeitados</span><strong id="metricRejected">0</strong><p>Não devem ser publicados.</p></div>
-    </section>
-
-    <section class="notice">
-      <span class="label">Rotina segura</span>
-      <p>Use o ChatGPT para receber o briefing, escolha os temas realmente importantes, cole cada item no formulário abaixo e aprove apenas o que tiver fonte confiável. Primeiro prepare a publicação. Depois use <strong>Publicar no GitHub/Netlify</strong> para gravar de verdade no repositório e disparar o deploy. Se a função segura ainda não estiver configurada no Netlify, o painel vai avisar e não vai fingir que publicou.</p>
-      <p class="status" id="status"></p>
-    </section>
-
-    <section class="workspace" style="margin-top: 1rem;">
-      <div class="panel">
-        <h2>Novo rascunho</h2>
-        <form id="draftForm" class="form-grid">
-          <div>
-            <label for="category">Tema</label>
-            <select id="category" required>
-              <option>Geopolítica</option>
-              <option>Conflitos</option>
-              <option>Comércio</option>
-              <option>Energia</option>
-              <option>Commodities</option>
-              <option>Risco-País</option>
-              <option>Brasil Global</option>
-              <option>Mercados</option>
-              <option>Tecnologia</option>
-            </select>
-          </div>
-          <div>
-            <label for="sourceName">Fonte principal</label>
-            <input id="sourceName" placeholder="Reuters, AP, Banco Central, OMC..." required />
-          </div>
-          <div class="full">
-            <label for="title">Título analítico</label>
-            <input id="title" placeholder="Ex.: Tarifas dos EUA recolocam exportadores brasileiros em alerta" required />
-          </div>
-          <div class="full">
-            <label for="sourceUrl">Link da fonte</label>
-            <input id="sourceUrl" type="url" placeholder="https://..." required />
-          </div>
-          <div class="full">
-            <label for="summary">Resumo curto</label>
-            <textarea id="summary" placeholder="O que aconteceu em 2 ou 3 frases, sem exagero e sem opinião solta." required></textarea>
-          </div>
-          <div class="full">
-            <label for="impact">Impacto para Brasil, negócios e mercados</label>
-            <textarea id="impact" placeholder="Explique câmbio, exportações, energia, commodities, risco político, empresas ou diplomacia brasileira." required></textarea>
-          </div>
-          <div>
-            <label for="urgency">Urgência editorial</label>
-            <select id="urgency">
-              <option>Hoje</option>
-              <option>Esta semana</option>
-              <option>Acompanhar</option>
-            </select>
-          </div>
-          <div>
-            <label for="image">Imagem real/licenciada</label>
-            <input id="image" type="url" placeholder="URL de Wikimedia, Unsplash, Pexels, foto oficial ou press kit" />
-            <p class="field-help">Use imagem real e relacionada ao fato. Evite IA, imagem aleatória ou foto de veículo fechado sem direito de uso.</p>
-          </div>
-          <div class="full">
-            <label for="angle">Ângulo sugerido</label>
-            <textarea id="angle" placeholder="Tese central: por que esse fato importa e qual pergunta estratégica ele abre."></textarea>
-          </div>
-          <div class="actions full">
-            <button type="submit">Criar rascunho</button>
-            <button type="reset" class="secondary">Limpar</button>
-          </div>
-        </form>
-      </div>
-
-      <aside class="panel">
-        <h2>Prompt diário</h2>
-        <p>Use este bloco no ChatGPT quando quiser gerar o briefing do dia.</p>
-        <div class="actions" style="margin-bottom: .8rem;">
-          <button id="copyPrompt" class="secondary">Copiar prompt</button>
+    <section class="panel">
+      <h2>Publicar novo artigo</h2>
+      <form id="publishForm">
+        <div>
+          <label for="category">Tema</label>
+          <select id="category" required>
+            <option>Geopolítica</option><option>Conflitos</option><option>Comércio</option><option>Energia</option><option>Commodities</option><option>Risco-País</option><option>Brasil Global</option><option>Mercados</option><option>Tecnologia</option>
+          </select>
         </div>
-        <div class="prompt-box" id="promptText">Envie um briefing diário com as principais notícias novas das últimas 24 horas sobre geopolítica, conflitos, política internacional, comércio internacional, energia, commodities, risco-país, economia global, empresas, tecnologia, mercados e Brasil no cenário global.
-
-Critérios obrigatórios: traga apenas notícias novas ou fatos atualizados; inclua fontes com links; priorize fontes confiáveis; descarte boatos; explique divergências; destaque impacto para Brasil, negócios, comércio exterior, mercados, energia, commodities e risco político.
-
-Formato: resumo executivo; notícias por bloco; radar de risco; sugestões de rascunhos para o site; filtro editorial final.</div>
-      </aside>
+        <div>
+          <label for="topic">Região</label>
+          <select id="topic" required>
+            <option>Global</option><option>Brasil Global</option><option>América Latina</option><option>América do Norte</option><option>Europa</option><option>Ásia-Pacífico</option><option>Oriente Médio</option><option>África</option>
+          </select>
+        </div>
+        <div class="full">
+          <label for="title">Título</label>
+          <input id="title" required minlength="12" placeholder="Título claro, analítico e sem sensacionalismo">
+        </div>
+        <div class="full">
+          <label for="text">Texto completo</label>
+          <textarea id="text" required minlength="180" placeholder="Cole ou escreva a análise. Separe os parágrafos com uma linha em branco."></textarea>
+        </div>
+        <div class="full">
+          <label for="summary">Resumo para a capa</label>
+          <textarea id="summary" maxlength="420" placeholder="Opcional. Se ficar vazio, o primeiro parágrafo será usado."></textarea>
+        </div>
+        <div>
+          <label for="sourceName">Fonte</label>
+          <input id="sourceName" required placeholder="Reuters, AP, OMC, governo...">
+        </div>
+        <div>
+          <label for="sourceUrl">Link da fonte</label>
+          <input id="sourceUrl" type="url" required placeholder="https://...">
+        </div>
+        <div class="full">
+          <label for="image">Link da imagem</label>
+          <input id="image" type="url" required placeholder="https://...">
+          <p class="help">Use imagem real, relacionada ao fato e com direito de uso: Wikimedia Commons, foto oficial ou press kit.</p>
+        </div>
+        <div class="full">
+          <button id="publishButton" type="submit">Publicar</button>
+          <div id="status" class="status" role="status" aria-live="polite"></div>
+        </div>
+      </form>
     </section>
 
-    <section class="workspace" style="margin-top: 1rem;">
-      <section>
-        <h2>Rascunhos</h2>
-        <div class="list" id="drafts"></div>
-      </section>
-      <section>
-        <h2>Posts atuais e pacote local</h2>
-        <div class="list" id="posts"></div>
-      </section>
+    <section class="panel recent">
+      <span class="label">No site agora</span>
+      <div id="recentPosts"><p>Carregando publicações...</p></div>
     </section>
   </main>
 
   <script>
-    const state = { posts: [], drafts: [] };
-    const statusEl = document.getElementById("status");
-    const defaultImages = {
-      "Geopolítica": "https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&w=1200&q=80",
-      "Conflitos": "https://images.unsplash.com/photo-1519452575417-564c1401ecc0?auto=format&fit=crop&w=1200&q=80",
-      "Comércio": "https://images.unsplash.com/photo-1494412519320-aa613dfb7738?auto=format&fit=crop&w=1200&q=80",
-      "Energia": "https://images.unsplash.com/photo-1516937941344-00b4e0337589?auto=format&fit=crop&w=1200&q=80",
-      "Commodities": "https://images.unsplash.com/photo-1560221328-12fe60f83ab8?auto=format&fit=crop&w=1200&q=80",
-      "Risco-País": "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=1200&q=80",
-      "Brasil Global": "https://images.unsplash.com/photo-1483729558449-99ef09a8c325?auto=format&fit=crop&w=1200&q=80",
-      "Mercados": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1200&q=80",
-      "Tecnologia": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80"
-    };
+    const form = document.getElementById("publishForm");
+    const button = document.getElementById("publishButton");
+    const statusBox = document.getElementById("status");
 
-    function setStatus(message) {
-      statusEl.textContent = message;
-    }
-
-    async function load() {
-      state.posts = await (await fetch("data/posts.json", { cache: "no-store" })).json();
-      state.drafts = await (await fetch("data/drafts.json", { cache: "no-store" })).json();
-      render();
-    }
-
-    function render() {
-      document.getElementById("drafts").innerHTML = state.drafts.map((item, index) => card(item, index, "draft")).join("") || '<div class="empty"><p>Nenhum rascunho agora. Cole uma pauta do briefing no formulário acima para começar.</p></div>';
-      document.getElementById("posts").innerHTML = state.posts.map((item, index) => card(item, index, "post")).join("") || '<div class="empty"><p>Nenhum post publicado.</p></div>';
-      document.getElementById("metricDrafts").textContent = state.drafts.filter((item) => item.status !== "rejected").length;
-      document.getElementById("metricPosts").textContent = state.posts.length;
-      document.getElementById("metricSources").textContent = [...state.drafts, ...state.posts].filter((item) => Boolean(item.sourceUrl)).length;
-      document.getElementById("metricRejected").textContent = state.drafts.filter((item) => item.status === "rejected").length;
-      bind();
-    }
-
-    function card(item, index, type) {
-      const checks = getChecks(item);
-      const source = item.sourceUrl ? `<a href="${escapeAttr(item.sourceUrl)}" target="_blank" rel="noopener">Abrir fonte</a>` : '<span class="bad">Sem fonte</span>';
-      const body = Array.isArray(item.body) ? item.body.join("\n\n") : item.body || "";
-
-      return `<article>
-        <span class="label">${escapeHtml(item.category || "Sem tema")}</span>
-        <h3>${escapeHtml(item.title || "Sem título")}</h3>
-        <p>${escapeHtml(item.summary || "")}</p>
-        <div class="post-meta">
-          <span class="pill">${escapeHtml(item.sourceName || "fonte não informada")}</span>
-          <span class="pill">${escapeHtml(item.publishedAt ? formatDate(item.publishedAt) : item.generatedAt ? formatDate(item.generatedAt) : "sem data")}</span>
-          <span class="pill">${escapeHtml(item.publishState === "prepared-for-github" ? "preparado localmente" : item.status || type)}</span>
-        </div>
-        <p>${source}</p>
-        ${type === "draft" ? draftControls(item, index, body, checks) : ""}
-      </article>`;
-    }
-
-    function draftControls(item, index, body, checks) {
-      const ready = checks.every((check) => check.ok);
-      return `<div class="checklist">
-        ${checks.map((check) => `<span class="${check.ok ? "ok" : "bad"}">${check.ok ? "OK" : "Revisar"} - ${check.text}</span>`).join("")}
-      </div>
-      <label>Status</label>
-      <select data-field="status" data-index="${index}">
-        <option ${item.status === "draft" ? "selected" : ""}>draft</option>
-        <option ${item.status === "approved" ? "selected" : ""}>approved</option>
-        <option ${item.status === "rejected" ? "selected" : ""}>rejected</option>
-      </select>
-      <label>Título</label>
-      <input data-field="title" data-index="${index}" value="${escapeAttr(item.title || "")}">
-      <label>Resumo</label>
-      <textarea data-field="summary" data-index="${index}">${escapeHtml(item.summary || "")}</textarea>
-      <label>Análise</label>
-      <textarea data-field="body" data-index="${index}">${escapeHtml(body)}</textarea>
-      <div class="actions">
-        <button data-approve="${index}" ${ready ? "" : "disabled"}>Preparar publicação</button>
-        <button class="secondary" data-keep="${index}">Manter rascunho</button>
-        <button class="danger" data-reject="${index}">Rejeitar</button>
-      </div>
-      <p class="field-help">Este botão prepara o post no navegador. Para aparecer no site público, baixe os JSONs atualizados e suba no GitHub.</p>
-      ${ready ? "" : "<p class='bad'>Complete fonte, resumo e impacto antes de preparar a publicação.</p>"}`;
-    }
-
-    function getChecks(item) {
-      const text = [item.summary, Array.isArray(item.body) ? item.body.join(" ") : item.body, item.angles?.pro, item.angles?.critical].filter(Boolean).join(" ").toLowerCase();
-      return [
-        { text: "tem link de fonte verificável", ok: Boolean(item.sourceUrl && item.sourceUrl.startsWith("http")) },
-        { text: "tem resumo editorial", ok: Boolean(item.summary && item.summary.trim().length > 80) },
-        { text: "tem impacto para Brasil, negócios ou mercados", ok: /brasil|mercado|negócio|negocios|empresa|comércio|comercio|energia|commodity|commodities|câmbio|cambio|risco/.test(text) },
-        { text: "tem análise suficiente para virar post", ok: text.length > 420 }
-      ];
-    }
-
-    function bind() {
-      document.querySelectorAll("[data-field]").forEach((input) => {
-        input.oninput = () => {
-          const draft = state.drafts[Number(input.dataset.index)];
-          if (input.dataset.field === "body") draft.body = input.value.split(/\n{2,}/).map((part) => part.trim()).filter(Boolean);
-          else draft[input.dataset.field] = input.value;
-          setStatus("Alteração feita no navegador. Baixe os JSONs para salvar.");
-        };
-        input.onchange = () => render();
-      });
-
-      document.querySelectorAll("[data-approve]").forEach((btn) => {
-        btn.onclick = () => {
-          const draft = state.drafts.splice(Number(btn.dataset.approve), 1)[0];
-          draft.status = "published";
-          draft.publishedAt = new Date().toISOString();
-          draft.publishState = "prepared-for-github";
-          draft.editorialChecks = { ...(draft.editorialChecks || {}), approvedByHuman: true, canPublishAutomatically: false };
-          state.posts.unshift(draft);
-          render();
-          setStatus("Preparado, mas ainda NÃO está no ar. Agora clique em Publicar no GitHub/Netlify. Se a função segura ainda não estiver configurada, baixe os JSONs e suba no GitHub.");
-        };
-      });
-
-      document.querySelectorAll("[data-keep]").forEach((btn) => {
-        btn.onclick = () => setStatus("Rascunho mantido. Revise com calma antes de preparar a publicação.");
-      });
-
-      document.querySelectorAll("[data-reject]").forEach((btn) => {
-        btn.onclick = () => {
-          state.drafts[Number(btn.dataset.reject)].status = "rejected";
-          render();
-          setStatus("Rascunho rejeitado localmente. Baixe drafts.json para salvar.");
-        };
-      });
-    }
-
-    document.getElementById("draftForm").addEventListener("submit", (event) => {
+    form.addEventListener("submit", async (event) => {
       event.preventDefault();
-      const category = value("category");
-      const title = value("title");
-      const summary = value("summary");
-      const impact = value("impact");
-      const angle = value("angle");
-      const sourceName = value("sourceName");
-      const sourceUrl = value("sourceUrl");
-      const urgency = value("urgency");
-      const image = value("image") || defaultImages[category];
-      const now = new Date().toISOString();
-      const body = [
-        summary,
-        impact,
-        angle ? `Ângulo editorial: ${angle}` : "",
-        `Urgência editorial: ${urgency}.`
-      ].filter(Boolean);
+      let secret = sessionStorage.getItem("powerTradeAdminSecret");
+      if (!secret) secret = prompt("Digite a senha administrativa do Power & Trade:");
+      if (!secret) return showStatus("Publicação cancelada. Nada foi enviado.", "error");
 
-      state.drafts.unshift({
-        id: `${slugify(title)}-${now.slice(0, 10)}`,
-        status: "draft",
-        category,
-        topic: category,
-        generatedAt: now,
-        publishedAt: "",
-        sourceName,
-        sourceUrl,
-        image,
-        title,
-        summary,
-        body,
-        angles: {
-          pro: angle || "Avaliar o efeito estratégico para empresas brasileiras e comércio exterior.",
-          critical: "Publicar somente após confirmar fonte, data e contexto.",
-          watch: impact
-        },
-        editorialChecks: {
-          hasSource: Boolean(sourceUrl),
-          needsHumanReview: true,
-          canPublishAutomatically: false,
-          approvedByHuman: false,
-          urgency
-        }
-      });
+      const article = {
+        category: value("category"), topic: value("topic"), title: value("title"), text: value("text"),
+        summary: value("summary"), sourceName: value("sourceName"), sourceUrl: value("sourceUrl"), image: value("image")
+      };
 
-      event.target.reset();
-      render();
-      setStatus("Rascunho criado. Revise o checklist antes de aprovar.");
-    });
-
-    document.getElementById("copyPrompt").onclick = async () => {
-      const text = document.getElementById("promptText").textContent;
-      try {
-        await navigator.clipboard.writeText(text);
-        setStatus("Prompt copiado.");
-      } catch {
-        setStatus("Não consegui copiar automaticamente. Selecione o texto do prompt e copie manualmente.");
-      }
-    };
-
-    document.getElementById("downloadPosts").onclick = () => download("posts.json", state.posts);
-    document.getElementById("downloadDrafts").onclick = () => download("drafts.json", state.drafts);
-    document.getElementById("publishOnline").onclick = publishOnline;
-
-    async function publishOnline() {
-      const secret = sessionStorage.getItem("powerTradeAdminSecret") || prompt("Senha de publicação do Power & Trade:");
-      if (!secret) {
-        setStatus("Publicação cancelada. Nenhum dado foi enviado.");
-        return;
-      }
-
-      setStatus("Enviando pacote ao GitHub. Aguarde a resposta antes de recarregar.");
+      button.disabled = true;
+      showStatus("Gravando o artigo no GitHub...", "working");
       try {
         const response = await fetch("/.netlify/functions/publish", {
-          method: "POST",
-          headers: {
-            "content-type": "application/json",
-            "x-admin-secret": secret
-          },
-          body: JSON.stringify({ posts: state.posts, drafts: state.drafts })
+          method:"POST",
+          headers:{ "content-type":"application/json", "x-admin-secret":secret },
+          body:JSON.stringify({ article })
         });
         const result = await response.json().catch(() => ({}));
-
         if (response.status === 401) {
           sessionStorage.removeItem("powerTradeAdminSecret");
-          setStatus("Senha incorreta. Nada foi publicado.");
-          return;
+          throw new Error("Senha administrativa incorreta. Nada foi publicado.");
         }
-
-        if (response.status === 501) {
-          setStatus(result.message || "Publicação real ainda não configurada no Netlify. Configure GITHUB_TOKEN e ADMIN_SECRET.");
-          return;
-        }
-
-        if (!response.ok) {
-          setStatus(result.message || "Falha ao publicar. Nada foi gravado no GitHub.");
-          return;
-        }
+        if (!response.ok) throw new Error(result.message || "O backend recusou a publicação.");
 
         sessionStorage.setItem("powerTradeAdminSecret", secret);
-        state.posts = result.posts || state.posts;
-        state.drafts = result.drafts || state.drafts;
-        render();
-        setStatus(`Publicado de verdade no GitHub. Commit ${result.commit?.slice(0, 7) || "criado"}. Aguarde o deploy do Netlify.`);
+        showStatus("Artigo salvo. O Netlify está publicando; aguarde nesta página...", "working");
+        const live = await waitUntilLive(result.articleId);
+        if (!live) {
+          showStatus(`O artigo foi salvo no GitHub (commit ${String(result.commit || "").slice(0,7)}), mas o deploy ainda está processando. Atualize esta página em alguns minutos.`, "working");
+          return;
+        }
+
+        showStatus("Publicado e confirmado no site público.", "success");
+        form.reset();
+        await loadRecentPosts();
       } catch (error) {
-        setStatus("Não consegui conectar com a função de publicação. Nada foi gravado no GitHub.");
+        showStatus(error.message || "Falha ao publicar. Nada foi confirmado no site.", "error");
+      } finally {
+        button.disabled = false;
+      }
+    });
+
+    async function waitUntilLive(articleId) {
+      const deadline = Date.now() + 120000;
+      while (Date.now() < deadline) {
+        await sleep(4000);
+        try {
+          const posts = await fetchPosts();
+          if (posts.some((post) => post.id === articleId)) return true;
+        } catch {}
+      }
+      return false;
+    }
+
+    async function loadRecentPosts() {
+      try {
+        const posts = await fetchPosts();
+        document.getElementById("recentPosts").innerHTML = posts.slice(0,5).map((post) => `<article><span class="label">${escapeHtml(post.category)} · ${escapeHtml(post.sourceName)}</span><h3>${escapeHtml(post.title)}</h3></article>`).join("") || "<p>Nenhum artigo publicado.</p>";
+      } catch {
+        document.getElementById("recentPosts").innerHTML = "<p>Não foi possível carregar os artigos agora.</p>";
       }
     }
 
-    function value(id) {
-      return document.getElementById(id).value.trim();
+    async function fetchPosts() {
+      const response = await fetch(`data/posts.json?v=${Date.now()}`, { cache:"no-store" });
+      if (!response.ok) throw new Error("posts.json indisponível");
+      return response.json();
     }
-
-    function slugify(value) {
-      return value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 72) || "rascunho";
-    }
-
-    function download(name, data) {
-      const blob = new Blob([JSON.stringify(data, null, 2) + "\n"], { type: "application/json" });
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob);
-      a.download = name;
-      a.click();
-      URL.revokeObjectURL(a.href);
-    }
-
-    function formatDate(value) {
-      return new Intl.DateTimeFormat("pt-BR", { dateStyle: "short", timeStyle: "short" }).format(new Date(value));
-    }
-
-    function escapeHtml(value = "") {
-      return String(value).replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
-    }
-
-    function escapeAttr(value = "") {
-      return escapeHtml(value).replace(/`/g, "&#96;");
-    }
-
-    load().catch(() => setStatus("Para abrir o admin localmente, rode npm run serve nesta pasta. No site publicado, ele carrega normalmente."));
+    function value(id){ return document.getElementById(id).value.trim(); }
+    function sleep(ms){ return new Promise((resolve) => setTimeout(resolve,ms)); }
+    function showStatus(message,type){ statusBox.textContent=message; statusBox.className=`status show ${type}`; }
+    function escapeHtml(value=""){ return String(value).replace(/[&<>"']/g,(char)=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char])); }
+    loadRecentPosts();
   </script>
 </body>
 </html>
