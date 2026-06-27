@@ -117,7 +117,7 @@
       <div class="layout">
         <div class="grid" id="cards"></div>
         <aside class="sidebar">
-          <section class="risk" id="risco"><div class="body"><span class="label">Risco-País</span><h3>Radar Brasil</h3><p>Painel editorial para priorizar leitura de energia, fiscal, câmbio e ambiente regional.</p><p>Brasil 68</p><div class="bar" style="--w:68%"><i></i></div><p>Argentina 72</p><div class="bar" style="--w:72%"><i></i></div><p>China 79</p><div class="bar" style="--w:79%"><i></i></div></div></section>
+          <section class="risk" id="risco"><div class="body"><span class="label">Risco geopolítico</span><h3>Radar Global</h3><p>Prioridade editorial interna para acompanhar impactos sobre o Brasil, negócios e mercados. Não representa rating oficial de risco-país.</p><p>Oriente Médio 88</p><div class="bar" style="--w:88%"><i></i></div><p>Europa 76</p><div class="bar" style="--w:76%"><i></i></div><p>Ásia-Pacífico 73</p><div class="bar" style="--w:73%"><i></i></div><p>América Latina 68</p><div class="bar" style="--w:68%"><i></i></div><p>África 61</p><div class="bar" style="--w:61%"><i></i></div></div></section>
           <section class="side"><span class="label">Regra editorial</span><p>Posts automáticos entram como rascunho. Publicação exige fonte, data, contexto, lado favorável, lado crítico e revisão.</p></section>
         </aside>
       </div>
@@ -197,9 +197,15 @@
     ];
     const state = { posts: [], filter: "Todos", query: "" };
     const fmt = (date) => new Intl.DateTimeFormat("pt-BR", { dateStyle:"short", timeStyle:"short" }).format(new Date(date));
-    const categories = ["Todos", "Energia", "Comércio", "Risco-País", "América Latina", "Brasil Global"];
+    const categories = ["Todos", "Energia", "Comércio", "Risco-País", "Brasil Global", "América Latina", "América do Norte", "Europa", "Ásia-Pacífico", "Oriente Médio", "África"];
     const el = (tag, cls, html = "") => { const node = document.createElement(tag); if (cls) node.className = cls; node.innerHTML = html; return node; };
-    const matches = (post) => (state.filter === "Todos" || post.category === state.filter) && JSON.stringify(post).toLowerCase().includes(state.query.toLowerCase());
+    const matches = (post) => {
+      const filter = state.filter.toLowerCase();
+      const category = String(post.category || "").toLowerCase();
+      const topic = String(post.topic || "").toLowerCase();
+      const matchesFilter = state.filter === "Todos" || category === filter || topic === filter || category.includes(filter) || topic.includes(filter);
+      return matchesFilter && JSON.stringify(post).toLowerCase().includes(state.query.toLowerCase());
+    };
     async function loadPosts() {
       try {
         const response = await fetch("data/posts.json", { cache: "no-store" });
