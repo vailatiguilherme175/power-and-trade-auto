@@ -1,5 +1,10 @@
 [
   {
+    "date": "2026-11-20T17:41:24.341Z",
+    "action": "fetch-news",
+    "note": "10 rascunho(s) criado(s). Publicação automática permanece bloqueada."
+  },
+  {
     "date": "2026-11-19T18:08:37.297Z",
     "action": "fetch-news",
     "note": "20 rascunho(s) criado(s). Publicação automática permanece bloqueada."
@@ -493,10 +498,5 @@
     "date": "2026-08-13T10:16:19.741Z",
     "action": "fetch-news",
     "note": "18 rascunho(s) criado(s). Publicação automática permanece bloqueada."
-  },
-  {
-    "date": "2026-08-12T10:14:37.379Z",
-    "action": "fetch-news",
-    "note": "20 rascunho(s) criado(s). Publicação automática permanece bloqueada."
   }
 ]
